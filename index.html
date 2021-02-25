@@ -1,0 +1,159 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Responsive Smooth Card Carousel Demo</title>
+<link href="https://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
+<link href="./syle.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+
+<div class="heading">
+  <h1>Responsive Smooth Card Carousel</h1>
+</div>
+<div>
+<h1 id="selected_number"></h1>
+</div>
+<div class="card-carousel">
+</div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT" crossorigin="anonymous"></script> 
+<script>
+  let values = [
+        {
+            "title":"happiness1",
+            "description":"feelings of contentment, satisfaction and/or fulfillment"
+        },
+        {
+            "title":"health2",
+            "description":"placing importance on physical and emotional well-being"
+        },
+        {
+            "title":"helping others3",
+            "description":"placing importance on assisting other people2"
+        },
+        {
+            "title":"helping others4",
+            "description":"placing importance on assisting other people3"
+        },
+        {
+            "title":"helping others5",
+            "description":"placing importance on assisting other people4"
+        },
+    ]
+    let selectedValues = []
+    values.forEach(element => {
+      console.log(values.indexOf(element))
+      $(".card-carousel").append(`<div class="my-card">
+        <center>
+          <h1>${element.title}</h1>
+          <p>${element.description}</p>
+          <button style="display:none;" id="addbutton" class="${values.indexOf(element)}_but">Add</button>
+          </center>
+          </div>`)
+    });
+  // $(".card-carousel").append('<div class="my-card"><h1>hhh</h1></div>')
+  // $(".card-carousel").append('<div class="my-card"></div>')
+$num = $('.my-card').length;
+console.log("mycard")
+console.log($('.my-card'))
+$even = $num / 2;
+$odd = ($num + 1) / 2;
+
+if ($num % 2 == 0) {
+  $('.my-card:nth-child(' + $even + ')').addClass('active');
+  console.log("...............................")
+  console.log( $('.my-card:nth-child(' + $even + ')'))
+  $('.my-card:nth-child(' + $even + ')').prev().addClass('prev');
+  $('.my-card:nth-child(' + $even + ')').next().addClass('next');
+} else {
+  $('.my-card:nth-child(' + $odd + ')').addClass('active');
+  $($even+"_but").css("display","block")
+  $('.my-card:nth-child(' + $odd + ')').prev().addClass('prev');
+  $('.my-card:nth-child(' + $odd + ')').next().addClass('next');
+}
+
+$('.my-card').click(function(e) {
+  $slide = $('.active').width();
+  console.log($('.active').position().left);
+  // console.log("pppp")
+  // console.log(e)
+  
+  if ($(this).hasClass('next')) {
+    $('.card-carousel').stop(false, true).animate({left: '-=' + $slide});
+    console.log("next")
+    console.log($(this).children().children()[2].className)
+    $("."+$(this).children().children()[2].className).css("display","none")
+
+  } else if ($(this).hasClass('prev')) {
+    $('.card-carousel').stop(false, true).animate({left: '+=' + $slide});
+    $("."+$(this).children().children()[2].className).css("display","none")
+
+  }
+  $("."+$(this).children().children()[2].className).css("display","none")
+
+  $(this).removeClass('prev next');
+  $(this).siblings().removeClass('prev active next');
+  
+  
+  $(this).addClass('active');
+// $('.active').children().children()[2].css("display","block")
+$("."+$('.active').children().children()[2].className).css("display","block")
+
+// $('.active').children().children()[2].className
+  console.log($('.active').children().children()[2].className)
+  $(this).prev().addClass('prev');
+  $(this).next().addClass('next');
+});
+
+
+// Keyboard nav
+$('html body').keydown(function(e) {
+  if (e.keyCode == 37) { // left
+    $('.active').prev().trigger('click');
+  }
+  else if (e.keyCode == 39) { // right
+    $('.active').next().trigger('click');
+  }
+});
+$(document).on("click","#addbutton",(e)=>{
+  console.log("Clicked",e)
+  e.preventDefault()
+  // console.log("sssssssssssssssssssssssss")
+  // $(this).remove();
+  console.log("////////////////////////////")
+  console.log($($($($(e.target).parents())[1]).children()[0]).children()[0].innerHTML)
+  console.log($($($($(e.target).parents())[1]).children()[0]).children()[1].innerHTML)
+selectedValues.push({
+  title:$($($($(e.target).parents())[1]).children()[0]).children()[0].innerHTML,
+  description:$($($($(e.target).parents())[1]).children()[0]).children()[1].innerHTML
+})
+  // console.log($('.active #addbutton').parents()[1])
+  $($(e.target).parents()[1]).css("display","none")
+  // $($(e.target).parents()).addClass(`${}`)
+  // $('.my-card').trigger("click")
+  // $('.active #addbutton').parents()[1].css("display","block")
+  // $(this).prev().addClass('prev');
+  // $(this).next().addClass('next');
+  console.log("selectedvalues",selectedValues.length)
+  $("#selected_number").html("Selected Values: "+selectedValues.length)
+})
+</script>
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-36251023-1']);
+  _gaq.push(['_setDomainName', 'jqueryscript.net']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</body>
+</html>
