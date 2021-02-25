@@ -4,23 +4,46 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Development</title>
+<title>Responsive Smooth Card Carousel Demo</title>
 <link href="https://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
 <link href="./css/style.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 
 <div class="heading">
-  <h1>Development</h1>
+  <h1>Responsive Smooth Card Carousel</h1>
 </div>
 <div>
 <h1 id="selected_number"></h1>
 </div>
 <div class="card-carousel">
 </div>
+<div>
+  <a href="#" id="add_new_val">Add new Value</a>
+  <div id="new_value" style="display: none;">
+    <label>Value</label><br>
+    <input id="new_value_name" name="new_value_name" type="text" size="10"><br>
+    
+    <label>Definition</label><br>
+    <input id="new_value_def" name="new_value_def" type="text"><br>
+    
+    <a id="new_value_create" href="#">Create</a>
+  </div>
+</div>
 
 <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT" crossorigin="anonymous"></script> 
 <script>
+  let newValue = 0;
+  $("#add_new_val").click((e)=>{
+    e.preventDefault();
+    newValue == 0? newValue = 1:newValue=0
+    if(newValue === 1){
+    $("#new_value").css("display","block")
+    }else{
+    $("#new_value").css("display","none")
+
+    }
+  })
   let values = [
         {
             "title":"happiness1",
@@ -43,6 +66,22 @@
             "description":"placing importance on assisting other people4"
         },
     ]
+    $("#new_value_create").click((e)=>{
+      e.preventDefault();
+      let element = {
+        "title":$("#new_value_name").val(),
+            "description":$("#new_value_def").val()
+      }
+      values.push(element)
+      $(".card-carousel").append(`<div class="my-card">
+        <center>
+          <h1>${element.title}</h1>
+          <p>${element.description}</p>
+          <button style="display:none;" id="addbutton" class="${values.indexOf(element)}_but">Add</button>
+          </center>
+          </div>`)
+      console.log(element)
+    })
     let selectedValues = []
     values.forEach(element => {
       console.log(values.indexOf(element))
